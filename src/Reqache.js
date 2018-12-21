@@ -5,16 +5,16 @@ import Json from 'jsonify';
 function setFetchResponseType(fetchInstance, type) {
   return fetchInstance.then(response => {
     if (!response.ok) {
-      throw Error(response.statusText);
+      throw new Error(response.statusText);
     }
     return response[type]();
   });
 }
 
 function fetch(url) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  let env = options.env || 'dev';
-  let responseType = options.responseType || 'json';
+  const options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  const env = options.env || 'dev';
+  const responseType = options.responseType || 'json';
   const cache = window.localStorage;
   const request = setFetchResponseType(fetchPolly(url, options), responseType);
 
