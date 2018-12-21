@@ -5,15 +5,15 @@ Reqache caches get requests so even when the page reloads you don't waste any of
 
 ## Reqache.fetch(url, options)
 
-# options (object) 
+### options (object) 
 
-# url (string) 
+### url (string) 
 
-# options.env - If you choose the 'dev' option, then results will be cached. Use 'prod' for normal fetch requests. 
+#### options.env - If you choose the 'dev' option, then results will be cached. Use 'prod' for normal fetch requests. 
 
-# options.type - The type of data you wish to receive json, text...etc. 
+#### options.type - The type of data you wish to receive json, text...etc. 
 
-# Other options are the normal fetch compliant options
+#### Other options are the normal fetch compliant options
 
 ```javascript
 // default is dev env
