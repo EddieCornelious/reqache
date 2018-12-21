@@ -1,3 +1,3 @@
-import { fetch } from './Reqache.js';
+import fetch from './Reqache.js';
 
 export { fetch };
