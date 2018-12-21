@@ -1,4 +1,3 @@
-
 import {Promise} from 'es6-promise';
 import {fetch as fetchPolly} from 'whatwg-fetch';
 import Json from 'jsonify';
@@ -23,9 +22,7 @@ export default (url, options) => {
   }
 
   if (!cache[url]) {
-    request
-      .then(result => cache.setItem(url, Json.stringify(result)));
+    request.then(result => cache.setItem(url, Json.stringify(result)));
   }
   return Promise.resolve(Json.parse(cache.getItem(url)));
-
 };
