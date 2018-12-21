@@ -11,7 +11,7 @@ function setFetchResponseType(fetchInstance, type) {
   });
 }
 
-export default function(url, options = {}) {
+function Reqache(url, options = {}) {
   let env = options.env || 'dev';
   let responseType = options.responseType || 'json';
   const cache = window.localStorage;
@@ -26,3 +26,5 @@ export default function(url, options = {}) {
   }
   return Promise.resolve(Json.parse(cache.getItem(url)));
 }
+
+export default Reqache;
