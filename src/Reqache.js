@@ -11,7 +11,8 @@ function setFetchResponseType(fetchInstance, type) {
   });
 }
 
-function fetch(url, options) {
+function fetch(url) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   let env = options.env || 'dev';
   let responseType = options.responseType || 'json';
   const cache = window.localStorage;
