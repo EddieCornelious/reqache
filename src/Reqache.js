@@ -11,20 +11,24 @@ function setFetchResponseType(fetchInstance, type) {
   });
 }
 
-function fetch(url) {
-  const options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const env = options.env || 'dev';
-  const responseType = options.responseType || 'json';
+function fetch(url, options = {}) {
+  const {env = 'dev', responseType = 'json'} = options;
   const cache = window.localStorage;
-  const request = setFetchResponseType(fetchPolly(url, options), responseType);
 
   if (env === 'prod') {
-    return request;
+    return setFetchResponseType(fetchPolly(url, options), responseType);
   }
 
-  if (!cache[url]) {
-    request.then(result => cache.setItem(url, Json.stringify(result)));
+  if (!cache.getItem(url)) {
+    return setFetchResponseType(fetchPolly(url, options), responseType).then(
+      result => {
+        cache.setItem(url, Json.stringify(result));
+
+        return Promise.resolve(result);
+      }
+    );
   }
+
   return Promise.resolve(Json.parse(cache.getItem(url)));
 }
 
