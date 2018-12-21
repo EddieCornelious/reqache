@@ -11,7 +11,7 @@ function setFetchResponseType(fetchInstance, type) {
   });
 }
 
-export default function fetch(url, options = {}) {
+export function fetch(url, options = {}) {
   let env = options.env || 'dev';
   let responseType = options.responseType || 'json';
   const cache = window.localStorage;
