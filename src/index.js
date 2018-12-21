@@ -1,3 +1,3 @@
-import fetch from './Reqache.js';
+const fetch = require('./Reqache.js');
 
-export { fetch };
+module.exports.fetch = fetch;
