@@ -1,4 +1,3 @@
-import {Promise} from 'es6-promise';
 import {fetch as fetchPolly} from 'whatwg-fetch';
 import Json from 'jsonify';
 
@@ -13,23 +12,23 @@ function setFetchResponseType(fetchInstance, type) {
 
 function fetch(url, options = {}) {
   const {env = 'dev', responseType = 'json'} = options;
-  const cache = window.localStorage;
+  const cache = {};
 
   if (env === 'prod') {
     return setFetchResponseType(fetchPolly(url, options), responseType);
   }
 
-  if (!cache.getItem(url)) {
+  if (!cache[url]) {
     return setFetchResponseType(fetchPolly(url, options), responseType).then(
       result => {
-        cache.setItem(url, Json.stringify(result));
+        cache[url] = Json.stringify(result);
 
         return Promise.resolve(result);
       }
     );
   }
 
-  return Promise.resolve(Json.parse(cache.getItem(url)));
+  return Promise.resolve(Json.parse(cache[url]));
 }
 
 module.exports = fetch;
