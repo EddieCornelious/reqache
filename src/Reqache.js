@@ -1,34 +1,28 @@
-import {fetch as fetchPolly} from 'whatwg-fetch';
 import Json from 'jsonify';
+async function setFetchResponseType(fetchInstance, type) {
+  const response = await fetchInstance;
 
-function setFetchResponseType(fetchInstance, type) {
-  return fetchInstance.then(response => {
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-    return response[type]();
-  });
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return response[type]();
 }
 
-function fetch(url, options = {}) {
+async function _fetch(url, options = {}) {
   const {env = 'dev', responseType = 'json'} = options;
   const cache = localStorage;
 
   if (env === 'prod') {
-    return setFetchResponseType(fetchPolly(url, options), responseType);
+    return setFetchResponseType(fetch(url, options), responseType);
   }
 
   if (!cache.getItem(url)) {
-    return setFetchResponseType(fetchPolly(url, options), responseType).then(
-      result => {
-        cache.setItem(url, Json.stringify(result));
+    const result = setFetchResponseType(fetch(url, options));
 
-        return Promise.resolve(result);
-      }
-    );
+    cache.setItem(url, Json.stringify(result));
+    return result;
   }
-
-  return Promise.resolve(Json.parse(cache.getItem(url)));
+  return await Json.parse(cache.getItem(url));
 }
 
-module.exports = fetch;
+module.exports = _fetch;
