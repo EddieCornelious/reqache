@@ -12,23 +12,23 @@ function setFetchResponseType(fetchInstance, type) {
 
 function fetch(url, options = {}) {
   const {env = 'dev', responseType = 'json'} = options;
-  const cache = {};
+  const cache = localStorage;
 
   if (env === 'prod') {
     return setFetchResponseType(fetchPolly(url, options), responseType);
   }
 
-  if (!cache[url]) {
+  if (!cache.getItem(url)) {
     return setFetchResponseType(fetchPolly(url, options), responseType).then(
       result => {
-        cache[url] = Json.stringify(result);
+        cache.setItem(url, Json.stringify(result));
 
         return Promise.resolve(result);
       }
     );
   }
 
-  return Promise.resolve(Json.parse(cache[url]));
+  return Promise.resolve(Json.parse(cache.getItem(url)));
 }
 
 module.exports = fetch;
