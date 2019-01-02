@@ -1,6 +1,6 @@
 {
   "name": "reqache",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "cache json data for debugging design",
   "main": "lib/reqache.js",
   "scripts": {
