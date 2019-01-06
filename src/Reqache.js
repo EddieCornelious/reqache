@@ -1,28 +1,34 @@
 import Json from 'jsonify';
-async function setFetchResponseType(fetchInstance, type) {
-  const response = await fetchInstance;
 
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-  return response[type]();
+function setFetchResponseType(fetchInstance, type) {
+  return fetchInstance.then(function(response) {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    return response[type]();
+  });
 }
 
-async function _fetch(url, options = {}) {
+function _fetch(url, options = {}) {
   const {env = 'dev', responseType = 'json'} = options;
-  const cache = localStorage;
+  const cache = window.localStorage;
+  const fetchNative = fetch;
 
   if (env === 'prod') {
-    return setFetchResponseType(fetch(url, options), responseType);
+    return setFetchResponseType(fetchNative(url, options), responseType);
   }
 
   if (!cache.getItem(url)) {
-    const result = setFetchResponseType(fetch(url, options));
+    return setFetchResponseType(fetchNative(url, options), responseType).then(
+      function(result) {
+        cache.setItem(url, Json.stringify(result));
 
-    cache.setItem(url, Json.stringify(result));
-    return result;
+        return Promise.resolve(result);
+      }
+    );
   }
-  return await Json.parse(cache.getItem(url));
+
+  return Promise.resolve(Json.parse(cache.getItem(url)));
 }
 
 module.exports = _fetch;
