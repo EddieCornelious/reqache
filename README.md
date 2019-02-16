@@ -1,22 +1,34 @@
-Do you have to use an API that gives you an unbearably low amount of calls per day? 
+# Reqache
 
-Reqache caches get requests so even when the page reloads you don't waste any of your calls on refreshs during development.
+Reqache is a library that caches get request data specifically for apis that have strict call limits
 
+## Installation
 
-## Reqache.fetch(url, options)
+```bash
+npm install reqache
+```
 
-### options (object) 
+## API
 
-### url (string) 
+* fetch(url, options)
+    * options is a js object that contains two properties : responseType and env
+        * env is the current enviornment you are running in. If you are in a production env, then reqache will not cache.
+            * prod or dev are the expected values for env
+        * responseType is the type of response you are expecting json, text etc..
 
-#### options.env - If you choose the 'dev' option, then results will be cached. Use 'prod' for normal fetch requests. 
-
-#### options.type - The type of data you wish to receive json, text...etc. 
-
-#### Other options are the normal fetch compliant options
+## Usage
 
 ```javascript
-// default is dev env
+import {fetch} from "reqache"
+
 fetch(url)
 .then(data=>console.log(data));
 ```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
